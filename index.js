@@ -8,9 +8,16 @@ const fromHexString = (hexString) =>
 const toHexString = (bytes) =>
   bytes.reduce((str, byte) => str + byte.toString(16).padStart(2, '0'), '');
 
+const fromUtf8String = (str) => {
+  const encoder = new TextEncoder();
+  const encoded = encoder.encode(str);
+  const byteArray = new Uint8Array(encoded);
+  return byteArray;
+}
 
-const aggregateAddress = "72d6b903899ED707306B7B1B5DD3D3b42195870c";
-const routerAddress = "B4B7f66d146613B1Cf4524cf47DE28db2b466567";
+
+const aggregateAddress = "123456789";
+const routerAddress = "0E8AB7131548af0D9798375B1cc9B5d06322bD60";
 const nftHash = keccak256("Some NFT").toString("hex");
 const owner1Address = "5Fd258E46CF5c5b2Ad252C37b48aeF887E65fd6A"
 const owner2Address = "4E49eC51fA1CA06aF05a2039f603855cCbE1Ab2b"
@@ -43,7 +50,7 @@ protobuf.load("operation.proto", function(err, root) {
 
 
     const MintCommand = { 
-      aggregateId: fromHexString(aggregateAddress),
+      aggregateId: fromUtf8String(aggregateAddress),
       cmdSignature: fromHexString(mockSignature),
       cmdType: 1,
       cmdPayload: encodedMintPayload
@@ -70,7 +77,7 @@ protobuf.load("operation.proto", function(err, root) {
 
 
     const TransferCommand = { 
-      aggregateId: fromHexString(aggregateAddress),
+      aggregateId: fromUtf8String(aggregateAddress),
       cmdSignature: fromHexString(mockSignature),
       cmdType: 2,
       cmdPayload: encodedTransferPayload
